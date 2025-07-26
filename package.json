@@ -9,8 +9,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "tailwindcss": "^3.4.17"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Martins-Jay/cryptoSpy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Martins-Jay/cryptoSpy/issues"
+  },
+  "homepage": "https://github.com/Martins-Jay/cryptoSpy#readme",
+  "description": ""
 }
