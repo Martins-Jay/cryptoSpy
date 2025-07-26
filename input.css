@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* create reusable class */
+.input-style {
+  @apply w-full text-white bg-dark border border-gray-700 placeholder-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition
+}
+
+@layer base {
+  /* Set the default font for the entire app */
+  body {
+    @apply font-inter;
+  }
+
+  /* Autofill fix for Safari/Chrome */
+  input:-webkit-autofill {
+    transition: background-color 9999s ease-in-out 0s;
+    -webkit-text-fill-color: #ffffff !important;
+    background-color: transparent !important;
+
+    /* Remove border/outline after autofill */
+    border: none !important;
+    outline: none !important;
+
+    @apply text-white caret-white focus:outline-none focus:ring-0;
+  }
+}
