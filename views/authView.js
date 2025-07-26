@@ -105,4 +105,4 @@ export function initPasswordToggle() {
 // Then change it to 'text', otherwise change it back to 'password'."
 
 // Show error icon and message
-export function showError(inputEL, errorEl, message) {}
+// export function showError(inputEL, errorEl, message) {}
