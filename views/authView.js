@@ -27,7 +27,7 @@ export const loginPassword_ErrorText =
 export const signupName_input = document.getElementById('signup-name');
 export const signupEmail_input = document.getElementById('signup-email');
 export const signupPassword_input = document.getElementById('signup-password');
-export const signupConfirm_input = document.getElementById('signup-confirm');
+export const signupConfirm_input = document.getElementById('confirm-password');
 // Signup Error Container
 export const signupName_ErrorContainer = document.getElementById(
   'signup-name-error-container'
@@ -40,6 +40,17 @@ export const signupPassword_ErrorContainer = document.getElementById(
 );
 export const signupConfirm_ErrorContainer = document.getElementById(
   'signup-confirm-error-container'
+);
+// Signup error Message
+export const signupName_ErrorText =
+  document.getElementById('signup-name-error');
+export const signupEmail_ErrorText =
+  document.getElementById('signup-email-error');
+export const signupPassword_ErrorText = document.getElementById(
+  'signup-password-error'
+);
+export const signupConfirmPassword_ErrorText = document.getElementById(
+  'signup-confirm-password-error'
 );
 
 // Get user input values
@@ -75,6 +86,21 @@ const eyeClosedIcon = `
           d="M3 3l18 18" />
   </svg>
 `;
+
+export const exclamationCircle = `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke-width="1.5"
+  stroke="#F44336 "
+  class="size-4"
+>
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+  />
+</svg>`;
 
 //  Password visibility toggle
 export function initPasswordToggle() {

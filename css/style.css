@@ -699,6 +699,14 @@ input:-webkit-autofill:focus {
   margin-top: 1rem;
 }
 
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
+.mb-16 {
+  margin-bottom: 4rem;
+}
+
 .block {
   display: block;
 }
@@ -728,8 +736,44 @@ input:-webkit-autofill:focus {
   height: 2rem;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
+.h-full {
+  height: 100%;
+}
+
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-80 {
+  min-height: 20rem;
+}
+
+.min-h-8 {
+  min-height: 2rem;
+}
+
+.min-h-\[90\] {
+  min-height: 90;
+}
+
+.min-h-\[90vh\] {
+  min-height: 90vh;
+}
+
+.min-h-full {
+  min-height: 100%;
+}
+
+.min-h-\[\] {
+  min-height: ;
+}
+
+.min-h-1 {
+  min-height: 0.25rem;
 }
 
 .w-16 {
@@ -806,6 +850,10 @@ input:-webkit-autofill:focus {
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .rounded-2xl {
   border-radius: 1rem;
 }
@@ -860,6 +908,11 @@ input:-webkit-autofill:focus {
   background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1));
 }
 
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
 .p-4 {
   padding: 1rem;
 }
@@ -877,6 +930,31 @@ input:-webkit-autofill:focus {
 .py-2\.5 {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .text-center {
@@ -934,6 +1012,11 @@ input:-webkit-autofill:focus {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
 }
 
 .shadow-2xl {
