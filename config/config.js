@@ -1,1 +1,1 @@
-export const TIMEOUT_SEC = 1;
+export const TIMEOUT_SEC = 10;
