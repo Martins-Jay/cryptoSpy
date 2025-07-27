@@ -8,6 +8,12 @@
     <!-- Link to Tailwind CLI Output -->
     <link rel="stylesheet" href="./css/style.css" />
 
+    <!-- CDN for Fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,8 +21,392 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
+    <script type="module" src="./controllers/main.js"></script>
   </head>
-  <body>
-    
+  <body class="flex flex-col h-full bg-gray-950 text-white">
+    <!-- Authentication Section -->
+    <section
+      class="flex items-center justify-center w-full h-screen overflow-hidden fixed hide-scrollbar bg-dark p-4"
+      id="auth-section"
+    >
+      <!-- Container for login and signup form -->
+      <div
+        class="w-full max-w-md bg-gray-800 rounded-2xl shadow-2xl py-10 px-6 mb-16 space-y-4"
+      >
+        <!-- App logo & name container -->
+        <h2 class="text-center text-3xl font-bold text-primary">CryptoSpy</h2>
+        <p id="dynamic-text-center" class="text-center text-md text-gray-400">
+          Login to Get Started
+        </p>
+
+        <!-- Login form (default visible) -->
+        <form action="" id="login-form" class="space-y-6">
+          <!-- Email input -->
+          <div>
+            <label for="email" class="block text-sm text-gray-300 mb-1">
+              Email
+            </label>
+
+            <div class="relative">
+              <input
+                type="text"
+                id="login-email"
+                placeholder="Example@mail.com"
+                class="input-style"
+              />
+            </div>
+
+            <!-- Error notice block -->
+            <div
+              id="login-email-error-container"
+              class="flex items-center mt-0.5 space-x-2 hidden"
+            >
+              <!-- Icon container -->
+              <div id="icon-container" class="ml-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="#F44336 "
+                  class="size-4"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Error text -->
+              <p id="login-email-error" class="text-red-500 text-sm"></p>
+            </div>
+          </div>
+
+          <!-- Password input -->
+          <div>
+            <label for="password" class="block text-sm text-gray-300 mb-1">
+              Password
+            </label>
+
+            <div class="relative">
+              <input
+                type="password"
+                id="password-input"
+                placeholder="Enter your password"
+                class="password-input input-style"
+              />
+
+              <!-- Eye icon will be injected here by jScript -->
+              <span class="toggle-password-btn absolute right-4 top-1/4"></span>
+            </div>
+
+            <!-- Error notice block -->
+            <div
+              id="login-password-error-container"
+              class="flex items-center mt-0.5 space-x-2 hidden"
+            >
+              <!-- Icon container -->
+              <div id="icon-container" class="ml-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="#F44336 "
+                  class="size-4"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Error text -->
+              <p id="login-pw-error" class="text-red-500 text-sm">
+                Password is required
+              </p>
+            </div>
+          </div>
+
+          <!-- Div (space-y-4 effect won't allow mt-value if not wrapped like this) -->
+          <div>
+            <!-- Submit Button (mt-4 now possible) -->
+            <button
+              type="submit"
+              class="w-full font-semibold bg-primary hover:bg-indigo-500 py-2.5 rounded-lg transition mt-4"
+            >
+              Login
+            </button>
+          </div>
+
+          <!-- Forgot password & signup toggle container -->
+          <div class="flex items-center justify-between">
+            <!-- Forgot password link -->
+            <button
+              class="block text-sm text-indigo-400 text-center"
+              onclick="alert('This is a frontend-only demo. Please re-register if needed.')"
+            >
+              Forgot Password?
+            </button>
+
+            <!-- Signup toggle -->
+            <div class="text-sm text-center text-white">
+              New user?
+              <span
+                id="toggle-signup"
+                class="text-sm text-indigo-400 cursor-pointer"
+              >
+                Sign up
+              </span>
+            </div>
+          </div>
+        </form>
+
+        <!-- Signup form (hidden) -->
+        <form action="" id="signup-form" class="space-y-6 hidden">
+          <!-- Name -->
+          <div class="name-input">
+            <label for="name" class="block text-sm text-gray-300 mb-1">
+              First Name
+            </label>
+
+            <input
+              type="text"
+              id="signup-name"
+              class="input-style"
+              placeholder="First Name"
+            />
+
+            <!-- Error notice block -->
+            <div
+              id="signup-name-error-container"
+              class="flex items-center mt-0.5 space-x-2 hidden"
+            >
+              <!-- Icon container -->
+              <div id="icon-container" class="ml-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="#F44336 "
+                  class="size-4"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Error text -->
+              <p id="signup-name-error" class="text-red-500 text-sm"></p>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label
+              for="signup-email-container"
+              class="block text-sm text-gray-300 mb-1"
+            >
+              Email
+            </label>
+
+            <input
+              type="text"
+              id="signup-email"
+              placeholder="Example@mail.com"
+              class="input-style"
+            />
+
+            <!-- Error notice block -->
+            <div
+              id="signup-email-error-container"
+              class="flex items-center mt-0.5 space-x-2 hidden"
+            >
+              <!-- Icon container -->
+              <div id="icon-container" class="ml-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="#F44336 "
+                  class="size-4"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Error text -->
+              <p id="signup-email-error" class="text-red-500 text-sm"></p>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label
+              for="signup-password"
+              class="block text-sm text-gray-300 mb-1"
+            >
+              Password
+            </label>
+
+            <div class="relative">
+              <input
+                type="password"
+                id="signup-password"
+                class="password-input input-style"
+                placeholder="Enter your password"
+              />
+
+              <!-- Eye icon will be injected here by jScript -->
+              <span class="toggle-password-btn absolute right-4 top-1/4"></span>
+            </div>
+
+            <!-- Error notice block -->
+            <div
+              id="signup-password-error-container"
+              class="flex items-center mt-0.5 space-x-2 hidden"
+            >
+              <!-- Icon container -->
+              <div id="icon-container" class="ml-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="#F44336 "
+                  class="size-4"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Error text -->
+              <p id="signup-password-error" class="text-red-500 text-sm"></p>
+            </div>
+          </div>
+
+          <!-- Confirm password -->
+          <div>
+            <label
+              for="signup-confirm"
+              class="block text-sm text-gray-300 mb-1"
+            >
+              Confirm Password
+            </label>
+
+            <div class="relative">
+              <input
+                type="password"
+                id="confirm-password"
+                class="password-input input-style"
+                placeholder="Enter your password"
+              />
+
+              <!-- Eye icon will be injected here by jScript -->
+              <span class="toggle-password-btn absolute right-4 top-1/4"></span>
+            </div>
+
+            <!-- Error notice block -->
+            <div
+              id="signup-confirm-error-container"
+              class="flex items-center mt-0.5 space-x-2 hidden"
+            >
+              <!-- Icon container -->
+              <div id="icon-container" class="ml-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="#F44336 "
+                  class="size-4"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Error text -->
+              <p
+                id="signup-confirm-password-error"
+                class="text-red-500 text-sm"
+              ></p>
+            </div>
+          </div>
+
+          <!-- Div (space-y-3 parent container effect wont allow mt-value id not wrapped like this) -->
+          <div>
+            <!-- Submit button (mt-4 now possible) -->
+            <button
+              type="submit"
+              class="w-full font-semibold bg-primary hover:bg-indigo-500 py-2.5 rounded-lg transition mt-4"
+            >
+              Sign Up
+            </button>
+          </div>
+
+          <div class="flex item-center justify-center">
+            <div class="text-sm text-center text-white">
+              Already a member?
+              <span
+                id="toggle-login"
+                class="text-sm text-indigo-400 cursor-pointer"
+              >
+                Sign In
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Loader overlay (hidden by default) -->
+    <div
+      id="loader"
+      class="hidden fixed flex items-center justify-center bg-black/50 inset-0 backdrop-blur-sm z-50"
+    >
+      <!-- Spinner & eye container -->
+      <div class="relative w-16 h-16">
+        <!-- Spinner ring -->
+        <div
+          class="absolute inset-0 border-[8px] rounded-full border-t-transparent border-l-indigo-300 border-r-indigo-300 animate-spin"
+        ></div>
+
+        <!-- Center eye (static) -->
+        <svg
+          class="absolute top-0 left-0 bottom-0 right-0 m-auto w-8 h-8 text-white z-10"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- App section (hidden until user logs in) -->
+    <!-- <section id="app-section" class="min-h-screen bg-"></section> -->
   </body>
 </html>
