@@ -1,5 +1,6 @@
 // authView.js file : All DOM selection & UI logic (toggle visibility, show/hide password, get form data).
 
+
 //  DOM Selectors
 export const toggleSignupBtn = document.getElementById('toggle-signup');
 export const toggleLoginBtn = document.getElementById('toggle-login');
@@ -53,13 +54,54 @@ export const signupConfirmPassword_ErrorText = document.getElementById(
   'signup-confirm-password-error'
 );
 
-// Get user input values
+// Select auth section elements
+export const authContainer = document.getElementById("auth-section");
+export const dashboardContainer = document.getElementById("dashboard-section");
+export const logoutBtn = document.getElementById("logout-btn");
+
+export function clearAuthForms() {
+  const forms = authContainer.querySelectorAll('form')
+  console.log(forms);
+
+  forms.forEach(formEl => {formEl.reset()})
+}
+
+export function showDashboard() {
+  authContainer.classList.add('hidden');
+  dashboardContainer.classList.remove('hidden')
+}
+
+export function showAuthPage() {
+  dashboardContainer.classList.add("hidden");
+  authContainer.classList.remove("hidden");
+
+  signupForm.classList.add('hidden')
+  loginForm.classList.remove('hidden')
+}
+
+export function updateUserDisplay(user) {
+  const userDisplay = document.querySelector('#user-display')
+  userDisplay.textContent = user.displayName || '';
+}
+
+
+
+// Get user login input values
 export function getLoginCredentials() {
-  //  Return the object
   return {
-    email: document.getElementById('login-email').value,
-    password: document.getElementById('password-input').value,
-  };
+    email: loginEmail_Input.value.trim(),
+    password: loginPassword_Input.value.trim()
+  }
+}
+
+// Get user signup input values
+export function getSignupCredentials() {
+  return {
+    name: signupName_input.value.trim(),
+    email: signupEmail_input.value.trim(),
+    password: signupPassword_input.value.trim(),
+    confirmPassword: signupConfirm_input.value.trim(),
+  }
 }
 
 //  SVG icons (kept inside this module)
@@ -107,7 +149,6 @@ export function initPasswordToggle() {
   const eyeSVG_Elements = document.querySelectorAll('.toggle-password-btn');
 
   eyeSVG_Elements.forEach((eyeSVG_Element) => {
-    console.log(eyeSVG_Element);
 
     //  Set initial icon
     eyeSVG_Element.innerHTML = eyeClosedIcon;
@@ -117,7 +158,6 @@ export function initPasswordToggle() {
       const inputEl = eyeSVG_Element
         .closest('div')
         .querySelector('.password-input');
-      console.log(inputEl);
 
       inputEl.type = inputEl.type === 'password' ? 'text' : 'password';
       eyeSVG_Element.innerHTML =

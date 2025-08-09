@@ -14,7 +14,7 @@ export function validateFieldFnc(
   // check if input is empty
   if (inputValue === '') {
     errorContainer.classList.remove('hidden');
-    errorText.textContent = 'Field cannot be left empty';
+    errorText.textContent = 'field cannot be left empty';
     return false;
   }
 
@@ -42,13 +42,13 @@ export function validateConfirmPassword(
 
   if (confirmPwValue === '') {
     errorContainer.classList.remove('hidden');
-    errorText.textContent = 'Please confirm your password';
+    errorText.textContent = 'please confirm your password';
     return false;
   }
 
   if (passwordValue !== confirmPwValue) {
     errorContainer.classList.remove('hidden');
-    errorText.textContent = 'Passwords do not match';
+    errorText.textContent = 'passwords do not match';
     return false;
   }
 

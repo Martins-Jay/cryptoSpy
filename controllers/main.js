@@ -1,5 +1,6 @@
 import * as AuthController from './authController.js';
 
+
 document.addEventListener('DOMContentLoaded', () => {
   AuthController.initAuthViewFnc(); // Password toggle
 
@@ -7,8 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   AuthController.handleLoginValidation(); // Init Login validation
 
-  AuthController.handleSigninValidation(); // Init signin validation
+  AuthController.handleSignupValidation(); // Init signin validation
+
+  AuthController.initAuthObserver()
+
+  AuthController.handleLogout();
+
 });
+
+
 
 
 
