@@ -1,6 +1,7 @@
 // authController.js
 
 import * as authView from '../views/authView.js';
+import * as authModel from '../models/authModel.js';
 import * as LoaderView from '../views/loaderView.js';
 import { TIMEOUT_SEC } from '../config/config.js';
 import {
@@ -61,187 +62,138 @@ function isPasswordMatchFn(confirmVal, originalVal) {
   return confirmVal === originalVal;
 }
 
-// LOGIN form logic
-export function handleLoginValidation() {
+async function handleLoginSubmit(e) {
+  e.preventDefault();
 
+  const { email, password } = authView.getLoginCredentials();
 
-  authView.loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  const emailValid = validateFieldFnc(
+    authView.loginEmail_Input,
+    isValidEmailFn,
+    authView.loginEmail_ErrorContainer,
+    authView.loginEmail_ErrorText,
+    'Email must contain @mail.com'
+  );
 
-    const emailValid = validateFieldFnc(
-      authView.loginEmail_Input,
-      isValidEmailFn,
-      authView.loginEmail_ErrorContainer,
-      authView.loginEmail_ErrorText,
-      'Email must contain @mail.com'
-    );
+  const passwordValid = validateFieldFnc(
+    authView.loginPassword_Input,
+    isValidPasswordFn,
+    authView.loginPassword_ErrorContainer,
+    authView.loginPassword_ErrorText,
+    'Password must be at least 5 characters'
+  );
 
-    const passwordValid = validateFieldFnc(
-      authView.loginPassword_Input,
-      isValidPasswordFn,
-      authView.loginPassword_ErrorContainer,
-      authView.loginPassword_ErrorText,
-      'Password must be at least 5 characters'
-    );
-
-    if (emailValid && passwordValid) {
-      console.log('✅ Logging in...');
+  if (emailValid && passwordValid) {
+    try {
       LoaderView.showLoader(TIMEOUT_SEC); // Shows spinner
+      authView.clearAuthForms();
 
-      setTimeout(() => {
-        LoaderView.hideLoader(); // Hides loader after timerdelay
-      }, 5000);
+      const user = await authModel.loginUser(email, password);
+      console.log(user);
+      // Optional: Redirect to dashboard or show welcome message
+    } catch (error) {
+      //  Extract text between parenthesis
+      const errorCode = error.code
+        ? error.code.replace('auth/', '').replace(/-/g, ' ')
+        : error.message;
+
+      authView.loginEmail_ErrorContainer.classList.remove('hidden');
+      authView.loginEmail_ErrorText.textContent = errorCode;
+      authView.loginPassword_ErrorText.textContent = errorCode;
+    } finally {
+      LoaderView.hideLoader(); // Hides loader
     }
-  });
+  }
+}
+
+export function handleLoginValidation() {
+  authView.loginForm.addEventListener('submit', handleLoginSubmit);
 }
 
 // SIGNUP form logic
-export function handleSigninValidation() {
+async function handleSignupSubmit(e) {
+  e.preventDefault();
 
-  authView.signupForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  const { name, email, password, confirmPassword } =
+    authView.getSignupCredentials();
 
-    const nameValid = validateFieldFnc(
-      authView.signupName_input,
-      isValidNameFn,
-      authView.signupName_ErrorContainer,
-      authView.signupName_ErrorText,
-      'Name must be at least 3 letters and contain only letters'
-    );
+  const nameValid = validateFieldFnc(
+    authView.signupName_input,
+    isValidNameFn,
+    authView.signupName_ErrorContainer,
+    authView.signupName_ErrorText,
+    'Name must be at least 3 letters and contain only letters'
+  );
 
-    const emailValid = validateFieldFnc(
-      authView.signupEmail_input,
-      isValidEmailFn,
-      authView.signupEmail_ErrorContainer,
-      authView.signupEmail_ErrorText,
-      'Email must contain @mail.com'
-    );
+  const emailValid = validateFieldFnc(
+    authView.signupEmail_input,
+    isValidEmailFn,
+    authView.signupEmail_ErrorContainer,
+    authView.signupEmail_ErrorText,
+    'Email must contain @mail.com'
+  );
 
-    const passwordValid = validateFieldFnc(
-      authView.signupPassword_input,
-      isValidPasswordFn,
-      authView.signupPassword_ErrorContainer,
-      authView.signupPassword_ErrorText,
-      'Password must be at least 5 characters'
-    );
+  const passwordValid = validateFieldFnc(
+    authView.signupPassword_input,
+    isValidPasswordFn,
+    authView.signupPassword_ErrorContainer,
+    authView.signupPassword_ErrorText,
+    'Password must be at least 5 characters'
+  );
 
-    const confirmPwValid = validateConfirmPassword(
-      authView.signupPassword_input,
-      authView.signupConfirm_input,
-      authView.signupConfirm_ErrorContainer,
-      authView.signupConfirmPassword_ErrorText
-    );
+  const confirmPwValid = validateConfirmPassword(
+    authView.signupPassword_input,
+    authView.signupConfirm_input,
+    authView.signupConfirm_ErrorContainer,
+    authView.signupConfirmPassword_ErrorText
+  );
 
-    if (emailValid && passwordValid && nameValid && confirmPwValid) {
-      console.log('✅ Logging in...');
+  // 4️⃣ If all fields are valid, try signup
+  if (emailValid && passwordValid && nameValid && confirmPwValid) {
+    try {
       LoaderView.showLoader(TIMEOUT_SEC); // Shows spinner
+      authView.clearAuthForms();
 
-      setTimeout(() => {
-        LoaderView.hideLoader(); // Hides loader after timerdelay
-      }, 5000);
+      // Call the model to create the user
+      const user = await authModel.signupUser(name, email, password);
+      console.log('✅ Signup successful:', user);
+
+      // Optional: Redirect to dashboard or show welcome message
+    } catch (error) {
+      //  Extract text between parenthesis
+      const errorCode = error.code
+        ? error.code.replace('auth/', '').replace(/-/g, ' ')
+        : error.message;
+
+      authView.signupEmail_ErrorContainer.classList.remove('hidden');
+      authView.signupEmail_ErrorText.textContent = errorCode;
+    } finally {
+      LoaderView.hideLoader(); // Hides loader
+    }
+  }
+}
+
+export function handleSignupValidation() {
+  authView.signupForm.addEventListener('submit', handleSignupSubmit);
+}
+
+export function initAuthObserver() {
+  authModel.observeAuthState((user) => {
+    if (user) {
+      // User is logged in
+      authView.updateUserDisplay(user)
+      authView.showDashboard();
+    } else {
+      // No user is logged in
+      console.log('User logged out');
+      authView.showAuthPage();
     }
   });
 }
 
-
-
-
-// // Login Form Validation idea
-// export function handleLoginValidation() {
-//   authView.loginForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-
-//     let isValid = true;
-
-//     const email = authView.signupEmail_Input.value;
-
-//     // Email check
-//     if (email.trim() === '') {
-//       authView.signupEmail_ErrorContainer.classList.remove('hidden');
-//       authView.signupEmail_ErrorText.innerHTML = 'Field cannot be left empty';
-//       isValid = false;
-//     } else if (!email.includes('@')) {
-//       authView.signupEmail_ErrorContainer.classList.remove('hidden');
-//       authView.signupEmail_ErrorText.innerHTML = 'Email must contain @';
-//       isValid = false;
-//     } else if (!email.includes('.com')) {
-//       authView.signupEmail_ErrorContainer.classList.remove('hidden');
-//       authView.signupEmail_ErrorText.innerHTML = 'Email must contain .com';
-//       isValid = false;
-//     } else {
-//       authView.signupEmail_ErrorContainer.classList.add('hidden');
-//     }
-
-//     // Password check
-//     if (authView.loginPassword_Input.value.trim() === '') {
-//       authView.loginPassword_ErrorContainer.classList.remove('hidden');
-//       authView.loginPassword_ErrorText.innerHTML = 'Field cannot be left empty';
-//       isValid = false;
-//     } else if (authView.loginPassword_Input.value.trim().length < 5) {
-//       authView.loginPassword_ErrorContainer.classList.remove('hidden');
-//       authView.loginPassword_ErrorText.innerHTML =
-//         'Password must be at least 5 characters';
-//       isValid = false;
-//     } else {
-//       authView.loginPassword_ErrorContainer.classList.add('hidden');
-//     }
-
-//     // Final submit action if valid
-//     if (isValid) {
-//       console.log('✅ Logging in...');
-//       LoaderView.showLoader(TIMEOUT_SEC); // Shows spinner
-
-//       setTimeout(() => {
-//         LoaderView.hideLoader(); // Hides loader after timerdelay
-//       }, 5000);
-//     }
-//   });
-// }
-
-// // Signup form validation
-// export function handleSigninValidation() {
-//   authView.signupForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-
-//     let isValid = true;
-//     const name = authView.signupName_input.value.trim();
-//     const email = authView.signupEmail_input.value.trim();
-
-//     // Name check
-//     if (name === '') {
-//       authView.signupName_ErrorContainer.classList.remove('hidden');
-//       authView.signupName_ErrorText.innerHTML = 'First name is required';
-//       isValid = false;
-//     } else if (name.length < 3) {
-//       authView.signupName_ErrorContainer.classList.remove('hidden');
-//       authView.signupName_ErrorText.innerHTML =
-//         'First name must above 2 letters';
-//       isValid = false;
-//     } else if (!/^[a-zA-Z]+$/.test(name)) {
-//       // This line ensures only letters a-z or A-Z are allowed
-//       authView.signupName_ErrorContainer.classList.remove('hidden');
-//       authView.signupName_ErrorText.innerHTML =
-//         'First name must contain only letters';
-//       isValid = false;
-//     } else {
-//       authView.signupName_ErrorContainer.classList.add('hidden');
-//     }
-
-//     // Email check
-//     if (email.trim() === '') {
-//       authView.signupEmail_ErrorContainer.classList.remove('hidden');
-//       authView.signupEmail_ErrorText.innerHTML = 'Field cannot be left empty';
-//       isValid = false;
-//     } else if (!email.includes('@')) {
-//       authView.signupEmail_ErrorContainer.classList.remove('hidden');
-//       authView.signupEmail_ErrorText.innerHTML = 'Email must contain @';
-//       isValid = false;
-//     } else if (!email.includes('.com')) {
-//       authView.signupEmail_ErrorContainer.classList.remove('hidden');
-//       authView.signupEmail_ErrorText.innerHTML = 'Email must contain .com';
-//       isValid = false;
-//     } else {
-//       authView.signupEmail_ErrorContainer.classList.add('hidden');
-//     }
-//   });
-// }
+export function handleLogout() {
+  authView.logoutBtn.addEventListener('click', async () => {
+    await authModel.logoutUser();
+    console.log('User logged out successfully');
+  });
+}

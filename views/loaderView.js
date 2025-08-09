@@ -4,13 +4,7 @@ const loaderEl = document.getElementById('loader');
 let raceTimeout;
 
 export function showLoader(timeout) {
-  clearTimeout(raceTimeout);
   loaderEl.classList.remove('hidden');
-
-  // Optional: auto-hide after delay
-  raceTimeout = setTimeout(() => {
-    hideLoader(); // Called by jscript after delay 
-  }, timeout * 1000);
 }
 
 export function hideLoader() {
